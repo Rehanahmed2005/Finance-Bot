@@ -34,3 +34,11 @@ def get_category_summary(cag_expense):
         if transaction.trans_type == "expense":
             summary[transaction.category] = summary.get(transaction.category, 0) + transaction.amount
     return summary
+
+def get_suggestions(suggestions):
+    count = {}
+
+    for transaction in suggestions:
+        count[transaction.category] = count.get(transaction.category, 0) + 1
+    count = sorted(count, key=lambda x: count[x], reverse=True)[:3]
+    return count
