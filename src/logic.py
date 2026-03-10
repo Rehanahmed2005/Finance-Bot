@@ -14,15 +14,23 @@ def save_transactions(transactions):
         data = [entry.to_dict() for entry in transactions]
         json.dump(data, f, indent=2)
 
-def get_balance(transactionList):
-    income = 0
-    expense = 0
+def get_balance(transaction_list: list) -> float:
+    """Calculate total balance from transactions."""
+    balance = 0
+    
+    for transaction in transaction_list:
+        if transaction.trans_type == "income":
+            balance += transaction.amount
+        elif transaction.trans_type == "expense":
+            balance -= transaction.amount
+    
+    return balance
 
-    for transaction in transactionList:
-        if(transaction.trans_type == "income"):
-            income += transaction.amount
-        elif(transaction.trans_type == "expense"):
-            expense += transaction.amount
+def get_category_summary(cag_expense):
+    """Calculates the total Expense for each category"""
+    summary = {}
 
-    Balance = income - expense
-    return Balance
+    for transaction in cag_expense:
+        if transaction.trans_type == "expense":
+            summary[transaction.category] = summary.get(transaction.category, 0) + transaction.amount
+    return summary
